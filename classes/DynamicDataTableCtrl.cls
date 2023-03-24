@@ -90,8 +90,12 @@ public class DynamicDataTableCtrl {
     String property /*label vs type*/
   ) {
     try {
-      Map<String, Schema.SObjectField> fieldMap = ApexUtils.globalDescribe
-        .get(objApiName)
+      Map<String, Schema.SObjectField> fieldMap = ((sObject) Type.forName(
+            'Schema',
+            objApiName
+          )
+          .newInstance())
+        .getSObjectType()
         .getDescribe()
         .fields.getMap();
 
