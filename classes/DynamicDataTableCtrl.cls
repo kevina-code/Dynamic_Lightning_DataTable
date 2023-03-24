@@ -24,7 +24,7 @@ public class DynamicDataTableCtrl {
         fieldApiNames +
         ' FROM ' +
         objApiName +
-        ' ' +
+        ' WHERE ' +
         whereClause;
       return Database.query(queryStr);
     } catch (exception e) {
