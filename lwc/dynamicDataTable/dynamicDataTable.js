@@ -14,6 +14,8 @@ import getFieldUpdateables from "@salesforce/apex/DynamicDataTableCtrl.getFieldU
 export default class DynamicDataTable extends NavigationMixin(
   LightningElement
 ) {
+  @api recordId;
+
   // target configs:
   @api title;
   @api objApiName;
@@ -68,11 +70,13 @@ export default class DynamicDataTable extends NavigationMixin(
   @wire(getRecords, {
     objApiName: "$objApiName",
     fieldApiNames: "$fieldApiNames",
-    whereClause: "$whereClause"
+    whereClause: "$whereClause",
+    recordId: "$recordId"
   })
   wiredRecords(result) {
     console.log("wiredRecords error", result.error);
     console.log("wiredRecords result.data", result.data);
+    console.log("recordId: ", this.recordId);
     if (result.data) {
       let tempRecList = [];
       result.data.forEach((record) => {
