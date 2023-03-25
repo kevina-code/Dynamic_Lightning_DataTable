@@ -194,13 +194,15 @@ export default class DynamicDataTable extends NavigationMixin(
       }
     }
 
-    columnList.push({
-      type: "action",
-      typeAttributes: {
-        rowActions: this.actions,
-        menuAlignment: "right"
-      }
-    });
+    if (this.actions.length) {
+      columnList.push({
+        type: "action",
+        typeAttributes: {
+          rowActions: this.actions,
+          menuAlignment: "right"
+        }
+      });
+    }
 
     return columnList;
   }
