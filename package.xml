@@ -3,6 +3,12 @@
     <types>
         <members>DynamicDataTableCtrl</members>
         <members>DynamicDataTableCtrlTest</members>
+        <members>FieldUtils</members>
+        <members>FieldUtilsTest</members>
+        <members>ObjPicklist</members>
+        <members>ObjPicklistTest</members>
+        <members>RecordDataModels</members>
+        <members>RecordDataModelsTest</members>
         <name>ApexClass</name>
     </types>
     <types>
