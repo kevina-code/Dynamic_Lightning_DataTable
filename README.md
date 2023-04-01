@@ -8,7 +8,6 @@ Object-agnostic easily configurable Dynamic Lightning Datatable LWC
 * Use dynamic id fields in optional where clause
 * Columns auto format the field type
 * Ability to use display relationship names/paths (ex: Account.Owner.Name)
-* Ability to 
 
 Deploy to Salesforce: https://live.playg.app/play/dynamic-lightning-data-table
 
