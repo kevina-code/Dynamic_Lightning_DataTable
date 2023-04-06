@@ -25,6 +25,14 @@ Syntax:
 </c-dynamic-data-table>
 ```
 
+---------------------------
+
+https://user-images.githubusercontent.com/124932501/230436405-d7d2d32b-fa2b-4f26-9aa0-c40f4725ad33.mp4
+
+---------------------------
+
 ![image](https://user-images.githubusercontent.com/124932501/229315781-e3369e1e-c37c-4656-8f58-4d758e46d5ae.png)
+
+---------------------------
 
 ![image](https://user-images.githubusercontent.com/124932501/229315764-2fe1e5bc-200c-44d2-bfca-cd99fa9fbf63.png)
