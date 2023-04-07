@@ -2,6 +2,9 @@
  * Author     : Kevin Antonioli (braveitnow@pm.me)
  * Description: controller for multiSelectLookup LWC
  * Created    : 03.22.2023
+ *
+ * Revisions:
+ * Date : Name : Notes
  */
 public class DynamicDataTableCtrl {
   /**
@@ -33,7 +36,7 @@ public class DynamicDataTableCtrl {
           new RecordDataModels.RecordWrapper(
             record,
             fieldPaths,
-            FieldUtils.getColumnHeaders(objApiName, fieldPaths)
+            DataTableUtils.getColumnPropertiesList(objApiName, fieldPaths)
           )
         );
       }
@@ -75,7 +78,7 @@ public class DynamicDataTableCtrl {
       TableProperties tableProperties = new TableProperties();
       for (String fieldPath : fieldPaths.split(',')) {
         fieldPath = fieldPath.trim();
-        FieldUtils.ColumnProperties columnProperties = FieldUtils.getColumnProperties(
+        DataTableUtils.ColumnProperties columnProperties = DataTableUtils.getColumnProperties(
           objApiName,
           fieldPath
         );

@@ -36,14 +36,6 @@
         description="Enter where clause to filter records. Do not include WHERE in the value."
       />
       <property
-        name="recordLimit"
-        type="Integer"
-        required="true"
-        label="Record Limit"
-        default="50"
-        description="Enter the desired record limit for the data table"
-      />
-      <property
         name="hideCheckboxColumn"
         type="Boolean"
         label="Hide Checkbox Column"
@@ -55,6 +47,12 @@
         label="Actions"
         placeholder="Ex: view, edit, delete"
         description="Optionally enter row actions to be added to the table"
+      />
+      <property
+        name="suppressBottomBar"
+        type="Boolean"
+        label="Supress Bottom Bar"
+        description="Optionally suppress the bottom bar that reveals the cancel and save button when a change is made to a cell"
       />
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
@@ -83,13 +81,6 @@
         description="Enter where clause to filter records. Do not include WHERE in the value."
       />
       <property
-        name="recordLimit"
-        type="Integer"
-        required="true"
-        label="Record Limit"
-        description="Enter the desired record limit for the data table"
-      />
-      <property
         name="hideCheckboxColumn"
         type="Boolean"
         label="Hide Checkbox Column"
@@ -101,6 +92,12 @@
         label="Actions"
         placeholder="Ex: view, edit, delete"
         description="Optionally enter row actions to be added to the table"
+      />
+      <property
+        name="suppressBottomBar"
+        type="Boolean"
+        label="Supress Bottom Bar"
+        description="Optionally suppress the bottom bar that reveals the cancel and save button when a change is made to a cell"
       />
       <property
         name="recordId"

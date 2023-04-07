@@ -18,10 +18,10 @@ private class DynamicDataTableCtrlTest {
 
     Test.startTest();
     List<RecordDataModels.RecordWrapper> acctsWrapper = DynamicDataTableCtrl.getRecordWrappers(
-      'Account',
-      'Id, Name, AccountNumber, Owner.Name',
-      'Name != null',
-      accounts[0].Id
+      'Account' /* object api name */,
+      'Id, Name, AccountNumber, Owner.Name' /* field paths */,
+      'Name != null' /* where clause */,
+      accounts[0].Id /* record id */
     );
     Test.stopTest();
 
@@ -38,10 +38,10 @@ private class DynamicDataTableCtrlTest {
     Test.startTest();
     try {
       List<RecordDataModels.RecordWrapper> acctsWrapper = DynamicDataTableCtrl.getRecordWrappers(
-        'Account',
-        'Id, Nameeeee, AccountNumber, Owner.Name',
-        'Name != null',
-        accounts[0].Id
+        'Account' /* object api name */,
+        'Idddd, Nameeee, AccooountNumber, Owner.Name' /* field paths */,
+        'Name != null' /* where clause */,
+        accounts[0].Id /* record id */
       );
     } catch (Exception e) {
       Assert.isTrue(e.getMessage().contains('Script-thrown exception'));
