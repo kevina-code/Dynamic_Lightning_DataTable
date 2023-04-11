@@ -62,6 +62,46 @@ public class FieldUtils {
   }
 
   /**
+   * @description: get picklist values for one of an object's picklist fields
+   * @param   objApiName    object api name
+   * @param   fieldApiName  picklist field api name
+   * @return  options       picklist values
+   */
+  public static List<String> getPicklistLabels(
+    String objApiName,
+    String fieldApiName
+  ) {
+    List<String> picklistValues = new List<String>();
+    Schema.DescribeFieldResult fieldResult = getFieldMap(objApiName)
+      .get(fieldApiName)
+      .getDescribe();
+    for (Schema.PicklistEntry plEntry : fieldResult.getPicklistValues()) {
+      picklistValues.add(plEntry.getLabel());
+    }
+    return picklistValues;
+  }
+
+  /**
+   * @description: get picklist values for one of an object's picklist fields
+   * @param   objApiName    object api name
+   * @param   fieldApiName  picklist field api name
+   * @return  options       picklist values
+   */
+  public static List<String> getPicklistValues(
+    String objApiName,
+    String fieldApiName
+  ) {
+    List<String> picklistValues = new List<String>();
+    Schema.DescribeFieldResult fieldResult = getFieldMap(objApiName)
+      .get(fieldApiName)
+      .getDescribe();
+    for (Schema.PicklistEntry plEntry : fieldResult.getPicklistValues()) {
+      picklistValues.add(plEntry.getValue());
+    }
+    return picklistValues;
+  }
+
+  /**
    * @description -> Method to get properties of a field set.
    * @usage example:
    *  List<Schema.FieldSetMember> fieldSetMemberList =  readFieldSet('SBQQ__LineEditor','SBQQ__Quote__c');

@@ -18,27 +18,34 @@ private class RecordDataModelsTest {
     insert contact;
 
     contact = [
-      SELECT Id, Name, Email, Account.Name
+      SELECT Id, Name, Email, Account.Name, AccountId, LeadSource
       FROM Contact
       WHERE Id = :contact.Id
     ];
 
     RecordDataModels.RecordWrapper recordWrappers = new RecordDataModels.RecordWrapper(
       contact,
-      'Id, Name, Email, Account.Name',
+      'Id, Name, Email, Account.Name, AccountId, LeadSource',
       DataTableUtils.getColumnPropertiesList(
         'Contact',
-        'Id, Name, Email, Account.Name'
+        'Id, Name, Email, Account.Name, AccountId, LeadSource'
       )
     );
 
     Assert.areEqual(
       recordWrappers.fieldPropertyMap.get('Account Name').columnHeader,
-      'Account Name'
+      'Account Name',
+      'Expected columnHeader to be "Account Name"'
+    );
+    Assert.areEqual(
+      recordWrappers.fieldPropertyMap.get('Lead Source').columnHeader,
+      'Lead Source',
+      'Expected columnHeader to be "Lead Source"'
     );
     Assert.areEqual(
       recordWrappers.fieldPropertyMap.get('Account Name').fieldValue,
-      'Test Account 1'
+      'Test Account 1',
+      'Expected fieldValue to be "Test Account 1"'
     );
   }
 
@@ -57,7 +64,8 @@ private class RecordDataModelsTest {
     return new Contact(
       FirstName = account.Name,
       LastName = account.name,
-      AccountId = account.Id
+      AccountId = account.Id,
+      LeadSource = 'Web'
     );
   }
 }

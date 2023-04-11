@@ -25,7 +25,7 @@ private class DynamicDataTableCtrlTest {
     );
     Test.stopTest();
 
-    Assert.isFalse(acctsWrapper == null);
+    Assert.isNotNull(acctsWrapper, 'Expected acctsWrapper not to be null');
   }
   @isTest
   static void test_getRecordsWrappersException() {
@@ -43,8 +43,12 @@ private class DynamicDataTableCtrlTest {
         'Name != null' /* where clause */,
         accounts[0].Id /* record id */
       );
+      Assert.fail('Illegal assignment exception Expected');
     } catch (Exception e) {
-      Assert.isTrue(e.getMessage().contains('Script-thrown exception'));
+      Assert.isTrue(
+        e.getMessage().contains('Script-thrown exception'),
+        'Expected exception message to contain "Script-thrown exception"'
+      );
     }
     Test.stopTest();
   }
@@ -62,21 +66,73 @@ private class DynamicDataTableCtrlTest {
     );
     Test.stopTest();
 
-    Assert.areEqual(tableProps1.columnHeaders[1], 'Account Name');
-    Assert.areEqual(tableProps1.columnHeaders[2], 'Account Number');
-    Assert.areEqual(tableProps1.columnHeaders[3], 'Owner Name');
-    Assert.areEqual(tableProps1.fieldTypes[1], 'STRING');
-    Assert.areEqual(tableProps1.fieldTypes[2], 'STRING');
-    Assert.isTrue(tableProps1.fieldUpdateables[1]);
-    Assert.isTrue(tableProps1.fieldUpdateables[2]);
+    Assert.areEqual(
+      tableProps1.columnHeaders[1],
+      'Name',
+      'Expected columnHeaders[1] to be equal to "Name"'
+    );
+    Assert.areEqual(
+      tableProps1.columnHeaders[2],
+      'Account Number',
+      'Expected columnHeaders[2] to be equal to "Account Number"'
+    );
+    Assert.areEqual(
+      tableProps1.columnHeaders[3],
+      'Owner Name',
+      'Expected columnHeaders[3] to be equal to "Owner Name"'
+    );
+    Assert.areEqual(
+      tableProps1.fieldTypes[1],
+      'STRING',
+      'Expected fieldTypes[1] to be equal to "STRING"'
+    );
+    Assert.areEqual(
+      tableProps1.fieldTypes[2],
+      'STRING',
+      'Expected fieldTypes[2] to be equal to "STRING"'
+    );
+    Assert.isTrue(
+      tableProps1.fieldUpdateables[1],
+      'Expected fieldUpdateables[1] to be equal to True'
+    );
+    Assert.isTrue(
+      tableProps1.fieldUpdateables[2],
+      'Expected fieldUpdateables[2] to be equal to True'
+    );
 
-    Assert.areEqual(tableProps2.columnHeaders[1], 'Full Name');
-    Assert.areEqual(tableProps2.columnHeaders[2], 'Business Phone');
-    Assert.areEqual(tableProps2.columnHeaders[4], 'Account Name');
-    Assert.areEqual(tableProps2.fieldTypes[1], 'STRING');
-    Assert.areEqual(tableProps2.fieldTypes[2], 'PHONE');
-    Assert.isFalse(tableProps2.fieldUpdateables[1]);
-    Assert.isTrue(tableProps2.fieldUpdateables[2]);
+    Assert.areEqual(
+      tableProps2.columnHeaders[1],
+      'Name',
+      'Expected columnHeaders[1] to be equal to "Name"'
+    );
+    Assert.areEqual(
+      tableProps2.columnHeaders[2],
+      'Business Phone',
+      'Expected columnHeaders[2] to be equal to "Business Phone"'
+    );
+    Assert.areEqual(
+      tableProps2.columnHeaders[4],
+      'Account Name',
+      'Expected columnHeaders[4] to be equal to "Account Name"'
+    );
+    Assert.areEqual(
+      tableProps2.fieldTypes[1],
+      'STRING',
+      'Expected fieldTypes[1] to be equal to "STRING"'
+    );
+    Assert.areEqual(
+      tableProps2.fieldTypes[2],
+      'PHONE',
+      'Expected fieldTypes[2] to be equal to "PHONE"'
+    );
+    Assert.isFalse(
+      tableProps2.fieldUpdateables[1],
+      'Expected fieldUpdateables[1] to be equal to False'
+    );
+    Assert.isTrue(
+      tableProps2.fieldUpdateables[2],
+      'Expected fieldUpdateables[2] to be equal to True'
+    );
   }
 
   @isTest
@@ -88,8 +144,12 @@ private class DynamicDataTableCtrlTest {
         'Id, Nameeeeee, AccountNumber, Owner.Name'
       );
       Test.stopTest();
+      Assert.fail('Illegal assignment exception Expected');
     } catch (Exception e) {
-      Assert.isTrue(e.getMessage().contains('Script-thrown exception'));
+      Assert.isTrue(
+        e.getMessage().contains('Script-thrown exception'),
+        'Expected exception message to contain "Script-thrown exception"'
+      );
     }
   }
 }

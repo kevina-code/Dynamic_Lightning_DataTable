@@ -16,14 +16,22 @@ public class FieldUtilsTest {
       .get('AccountNumber')
       .getDescribe()
       .getLabel();
-    Assert.areEqual(accountNumberLabel2, 'Account Number');
+    Assert.areEqual(
+      accountNumberLabel2,
+      'Account Number',
+      'Expected accountNumberLabel2 to be "Account Number"'
+    );
 
     String accountNumberLabel = FieldUtils.getDynamicDescribe('Account')
       .fields.getMap()
       .get('AccountNumber')
       .getDescribe()
       .getLabel();
-    Assert.areEqual(accountNumberLabel, 'Account Number');
+    Assert.areEqual(
+      accountNumberLabel,
+      'Account Number',
+      'Expected accountNumberLabel to be "Account Number"'
+    );
   }
 
   @isTest
@@ -33,13 +41,21 @@ public class FieldUtilsTest {
       .get('AccountNumber')
       .getDescribe()
       .getLabel();
-    Assert.areEqual(accountNumberLabel, 'Account Number');
+    Assert.areEqual(
+      accountNumberLabel,
+      'Account Number',
+      'Expected accountNumberLabel to be "Account Number"'
+    );
 
     String accountNumberLabel2 = FieldUtils.getFieldMap('Account')
       .get('AccountNumber')
       .getDescribe()
       .getLabel();
-    Assert.areEqual(accountNumberLabel2, 'Account Number');
+    Assert.areEqual(
+      accountNumberLabel2,
+      'Account Number',
+      'Expected accountNumberLabel2 to be "Account Number"'
+    );
   }
 
   @isTest
@@ -72,9 +88,17 @@ public class FieldUtilsTest {
     );
     Test.stopTest();
 
-    Assert.areEqual(accountName, queriedContact.Account.Name);
-    Assert.areEqual(contactName, queriedContact.Name);
-    Assert.isNull(blah);
+    Assert.areEqual(
+      accountName,
+      queriedContact.Account.Name,
+      'Expected accountName to be equal to the queried contact\'s account name'
+    );
+    Assert.areEqual(
+      contactName,
+      queriedContact.Name,
+      'Expected contactName to be equal to the queried contact\'s name'
+    );
+    Assert.isNull(blah, 'Expected blah to be null');
   }
 
   @isTest
@@ -104,7 +128,17 @@ public class FieldUtilsTest {
       'Account.BLAH.name'
     );
 
-    Assert.isNull(obj2);
+    Assert.isNull(obj2, 'Expected obj2 to be null');
+  }
+
+  @isTest
+  static void test_picklistMethods() {
+    Assert.isTrue(
+      FieldUtils.getPicklistLabels('Contact', 'LeadSource').contains('Web')
+    );
+    Assert.isTrue(
+      FieldUtils.getPicklistValues('Contact', 'LeadSource').contains('Web')
+    );
   }
 
   @isTest
@@ -145,12 +179,30 @@ public class FieldUtilsTest {
 
   @isTest
   static void test_fieldPermissionMethods() {
-    Assert.isTrue(FieldUtils.isFieldUpdateable(Account.Name));
-    Assert.isTrue(FieldUtils.isFieldAccessible(Account.Name));
-    Assert.isTrue(FieldUtils.isFieldCreateable(Account.Name));
-    Assert.isFalse(FieldUtils.isFieldUpdateable(Account.CreatedDate));
-    Assert.isTrue(FieldUtils.isFieldAccessible(Account.CreatedDate));
-    Assert.isFalse(FieldUtils.isFieldCreateable(Account.CreatedDate));
+    Assert.isTrue(
+      FieldUtils.isFieldUpdateable(Account.Name),
+      'Expected isFieldUpdateble to be true for Account Name field'
+    );
+    Assert.isTrue(
+      FieldUtils.isFieldAccessible(Account.Name),
+      'Expected isFieldAccessible to be true for Account Name field'
+    );
+    Assert.isTrue(
+      FieldUtils.isFieldCreateable(Account.Name),
+      'Expected isFieldCreateable to be true for Account Name field'
+    );
+    Assert.isFalse(
+      FieldUtils.isFieldUpdateable(Account.CreatedDate),
+      'Expected isFieldUpdateble to be false for Created Date field'
+    );
+    Assert.isTrue(
+      FieldUtils.isFieldAccessible(Account.CreatedDate),
+      'Expected isFieldAccessible to be true for Created Date field'
+    );
+    Assert.isFalse(
+      FieldUtils.isFieldCreateable(Account.CreatedDate),
+      'Expected isFieldCreateable to be false for Created Date field'
+    );
   }
 
   @isTest
@@ -189,33 +241,42 @@ public class FieldUtilsTest {
     );
 
     Assert.isTrue(
-      FieldUtils.getAllCreatableFieldsAsStr('Account').length() > 0
+      FieldUtils.getAllCreatableFieldsAsStr('Account').length() > 0,
+      'Expected the length of Account createable fields string to be greater than 0'
     );
     Assert.isTrue(
-      FieldUtils.getAllCreatableFieldsAsStr('Account').contains('Name')
+      FieldUtils.getAllCreatableFieldsAsStr('Account').contains('Name'),
+      'Expected the Account createable fields string to contain "Name"'
     );
     Assert.isFalse(
-      FieldUtils.getAllCreatableFieldsAsStr('Account').contains('CreatedById')
+      FieldUtils.getAllCreatableFieldsAsStr('Account').contains('CreatedById'),
+      'Expected the Account createable fields string to contain "CreatedById"'
     );
 
     Assert.isTrue(
-      FieldUtils.getAllUpdateableFieldsAsStr('Account').length() > 0
+      FieldUtils.getAllUpdateableFieldsAsStr('Account').length() > 0,
+      'Expected the length of Account updateable fields string to be greater than 0'
     );
     Assert.isTrue(
-      FieldUtils.getAllUpdateableFieldsAsStr('Account').contains('Name')
+      FieldUtils.getAllUpdateableFieldsAsStr('Account').contains('Name'),
+      'Expected the Account updateable fields string to contain "Name"'
     );
     Assert.isFalse(
-      FieldUtils.getAllUpdateableFieldsAsStr('Account').contains('CreatedById')
+      FieldUtils.getAllUpdateableFieldsAsStr('Account').contains('CreatedById'),
+      'Expected the Account updateable fields string to contain "CreatedById"'
     );
 
     Assert.isTrue(
-      FieldUtils.getAllAccessibleFieldsAsStr('Account').length() > 0
+      FieldUtils.getAllAccessibleFieldsAsStr('Account').length() > 0,
+      'Expected the length of Account accessible fields string to be greater than 0'
     );
     Assert.isTrue(
-      FieldUtils.getAllAccessibleFieldsAsStr('Account').contains('Name')
+      FieldUtils.getAllAccessibleFieldsAsStr('Account').contains('Name'),
+      'Expected the Account accessible fields string to contain "Name"'
     );
     Assert.isTrue(
-      FieldUtils.getAllAccessibleFieldsAsStr('Account').contains('CreatedById')
+      FieldUtils.getAllAccessibleFieldsAsStr('Account').contains('CreatedById'),
+      'Expected the Account accessible fields string to contain "CreatedById"'
     );
   }
 

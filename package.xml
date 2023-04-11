@@ -7,6 +7,8 @@
         <members>DynamicDataTableCtrlTest</members>
         <members>FieldUtils</members>
         <members>FieldUtilsTest</members>
+        <members>LookupController</members>
+        <members>LookupControllerTest</members>
         <members>ObjPicklist</members>
         <members>ObjPicklistTest</members>
         <members>RecordDataModels</members>
@@ -14,8 +16,16 @@
         <name>ApexClass</name>
     </types>
     <types>
+        <members>datatablePicklist</members>
         <members>dynamicDataTable</members>
+        <members>dynamicDataTableExt</members>
+        <members>lookupLwc</members>
+        <members>stencilLwc</members>
         <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>CustomDataTable</members>
+        <name>StaticResource</name>
     </types>
     <version>57.0</version>
 </Package>

@@ -18,6 +18,8 @@ public class RecordDataModels {
     @AuraEnabled
     public Object fieldValue;
     @AuraEnabled
+    public Boolean isExtendedPath = false;
+    @AuraEnabled
     public String fieldApiName;
     @AuraEnabled
     public String fieldType;
@@ -25,6 +27,14 @@ public class RecordDataModels {
     public String linkId;
     @AuraEnabled
     public String linkLabel;
+    @AuraEnabled
+    public String relObjName; // relationship object name (ex: Account)
+    @AuraEnabled
+    public String relObjApiName; // relationship object api name (ex: AccountId)
+    @AuraEnabled
+    public List<String> picklistLabels; // if the field is a picklist
+    @AuraEnabled
+    public List<String> picklistValues; // if the field is a picklist
   }
 
   /**
@@ -46,23 +56,38 @@ public class RecordDataModels {
       List<DataTableUtils.ColumnProperties> columnProperties
     ) {
       this.record = recordParam;
-
-      List<String> fieldApiNameList = fieldPaths.split(',');
-      for (String fieldPath : fieldApiNameList) {
-        Integer index = fieldApiNameList.indexOf(fieldPath);
+      String objApiName = String.valueOf(recordParam.getSObjectType());
+      List<String> fieldPathList = fieldPaths.split(',');
+      for (String fieldPath : fieldPathList) {
+        Integer index = fieldPathList.indexOf(fieldPath);
         fieldPath = fieldPath.trim();
         String columnHeader = columnProperties[index].columnHeaderLabel;
         FieldProperty fieldProperty = new FieldProperty();
         fieldProperty.columnHeader = columnHeader;
         fieldProperty.fieldType = columnProperties[index].fieldType;
-        fieldProperty.linkLabel = columnHeader + '^_^' + index;
+        fieldProperty.linkLabel = columnHeader;
+
         if (!fieldPath.contains('.')) {
+          if (fieldProperty.fieldType == 'REFERENCE') {
+            fieldProperty.relObjName = columnProperties[index].relObjName;
+            fieldProperty.relObjApiName = columnProperties[index].relObjApiName;
+          } else if (fieldProperty.fieldType == 'PICKLIST') {
+            fieldProperty.picklistLabels = FieldUtils.getPicklistLabels(
+              objApiName,
+              fieldPath
+            );
+            fieldProperty.picklistValues = FieldUtils.getPicklistValues(
+              objApiName,
+              fieldPath
+            );
+          }
           fieldProperty.fieldValue = recordParam.get(fieldPath);
           fieldProperty.fieldApiName = fieldPath;
           if (fieldProperty.fieldValue instanceof Id) {
             fieldProperty.linkId = String.valueOf(fieldProperty.fieldValue);
           }
         } else {
+          fieldProperty.isExtendedPath = true;
           fieldProperty.fieldValue = FieldUtils.parseValueFromFieldPath(
             recordParam,
             fieldPath
@@ -83,9 +108,8 @@ public class RecordDataModels {
       }
 
       Schema.DescribeSObjectResult describe = FieldUtils.getDynamicDescribe(
-        String.valueOf(recordParam.getSObjectType())
+        objApiName
       );
-      this.record = recordParam;
       this.objName = describe.getLabel();
       this.description = getDescriptionForPill(
         recordParam,
@@ -112,9 +136,9 @@ public class RecordDataModels {
   ) {
     String description = String.valueOf(record.get('Name'));
     if (fieldPaths != null) {
-      List<String> fieldApiNameList = fieldPaths.split(',');
-      for (String fieldPath : fieldApiNameList) {
-        Integer index = fieldApiNameList.indexOf(fieldPath);
+      List<String> fieldPathList = fieldPaths.split(',');
+      for (String fieldPath : fieldPathList) {
+        Integer index = fieldPathList.indexOf(fieldPath);
         fieldPath = fieldPath.trim();
         String columnHeader = columnProperties[index].columnHeaderLabel;
         if (
