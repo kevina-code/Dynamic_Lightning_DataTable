@@ -18,21 +18,24 @@ Syntax:
      field-paths="Id, Name, Email, Account.Owner.Name"
      field-paths-for-search="Name, Email"
      where-clause="AccountId = :recordId ORDER BY FirstName"
-	 actions-str="view, edit"
+     actions-str="view, edit"
+     suppress-bottom-bar=false
      record-data={recordData}
      record-id={recordId}
+     onrowstoggled={handleRowsToggled}
 >
 </c-dynamic-data-table>
 ```
 
 ---------------------------
 
-https://user-images.githubusercontent.com/124932501/230436405-d7d2d32b-fa2b-4f26-9aa0-c40f4725ad33.mp4
+https://user-images.githubusercontent.com/124932501/231554147-ab9f2d6b-8464-4c34-9f54-060f7727880f.mp4
 
 ---------------------------
 
-![image](https://user-images.githubusercontent.com/124932501/229315781-e3369e1e-c37c-4656-8f58-4d758e46d5ae.png)
+![Dynamic Data table config](https://user-images.githubusercontent.com/124932501/231554202-00c51ca6-2e04-4ad4-97fd-bf5cb986f08f.png)
 
 ---------------------------
 
-![image](https://user-images.githubusercontent.com/124932501/229315764-2fe1e5bc-200c-44d2-bfca-cd99fa9fbf63.png)
+![Dynamic Data table ex](https://user-images.githubusercontent.com/124932501/231554243-34515dd5-98e7-40e9-8a80-0d1e2dbf601b.png)
+
