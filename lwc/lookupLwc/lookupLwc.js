@@ -77,7 +77,7 @@ export default class LookupLwc extends LightningElement {
   connectedCallback() {
     this.defaultValue = this.valueId;
     if (!this.displayFormat) {
-      let splitFields = this.displayFields.split(",");
+      const splitFields = this.displayFields.split(",");
       this.displayFormat = splitFields[0];
     }
   }
@@ -103,20 +103,20 @@ export default class LookupLwc extends LightningElement {
   @wire(getObjectInfo, { objectApiName: "$objName" })
   wiredObjectInfo({ error, data }) {
     if (data) {
+      const relObjApiName = this.relObjApiName.replace("__c", "__r");
       for (let i = 0; i < this.recordData.length; i++) {
         if (this.recordData[i].Id === this.uniqueKey) {
           const record = this.recordData[i];
-          const relObjApiName = this.relObjApiName.replace("__c", "__r");
           const lookupRecord = record[relObjApiName];
           if (lookupRecord) {
-            this.selectItem(record[relObjApiName]);
+            this.selectItem(lookupRecord);
             break;
           }
         }
       }
 
       this.error = undefined;
-      let recordTypeInfos = Object.entries(data.recordTypeInfos);
+      const recordTypeInfos = Object.entries(data.recordTypeInfos);
       if (recordTypeInfos.length > 1) {
         let temp = [];
         recordTypeInfos.forEach(([key, value]) => {
@@ -145,7 +145,7 @@ export default class LookupLwc extends LightningElement {
       this.error = undefined;
       this.options = [];
       data.forEach((item) => {
-        let option = { ...item };
+        const option = { ...item };
         option.label = this.generateLabel(option);
         this.options.push(option);
       });
@@ -224,7 +224,7 @@ export default class LookupLwc extends LightningElement {
 
   generateLabel(record) {
     let label = this.displayFormat;
-    let splitFields = this.displayFields.split(",");
+    const splitFields = this.displayFields.split(",");
     splitFields.forEach((field) => {
       field = field.trim();
       let value;
@@ -250,8 +250,8 @@ export default class LookupLwc extends LightningElement {
   handleRemovePill() {
     this.isValue = false;
     this.valueId = "";
-    let selectedId = "";
-    let key = this.uniqueKey;
+    const selectedId = "";
+    const key = this.uniqueKey;
     this.dispatchEvent(
       new CustomEvent("valueselect", {
         composed: true,
@@ -290,7 +290,7 @@ export default class LookupLwc extends LightningElement {
   }
 
   handleLoad(event) {
-    let details = event.detail;
+    const details = event.detail;
 
     if (details) {
       setTimeout(() => {
@@ -311,8 +311,8 @@ export default class LookupLwc extends LightningElement {
     this.stencilClass = "";
     this.stencilReplacement = "slds-hide";
 
-    let selectedId = event.detail.id;
-    let key = this.uniqueKey;
+    const selectedId = event.detail.id;
+    const key = this.uniqueKey;
 
     this.dispatchEvent(
       new CustomEvent("valueselect", {
