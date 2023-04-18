@@ -7,6 +7,7 @@ import LightningDatatable from "lightning/datatable";
 import { loadStyle } from "lightning/platformResourceLoader";
 import CustomDataTableResource from "@salesforce/resourceUrl/CustomDataTable";
 import DatatablePicklistTemplate from "./picklist-template.html";
+import DatatableMultiPicklistTemplate from "./multi-picklist-template.html";
 import LookupTemplate from "./lookup-template.html";
 
 export default class DynamicDataTableExt extends LightningDatatable {
@@ -18,8 +19,22 @@ export default class DynamicDataTableExt extends LightningDatatable {
         "placeholder",
         "options",
         "value",
-        "context",
-        "fieldApiName"
+        "uniqueId",
+        "fieldApiName",
+        "makeColumnsReadOnly"
+      ]
+    },
+    multipicklist: {
+      template: DatatableMultiPicklistTemplate,
+      typeAttributes: [
+        "label",
+        "placeholder",
+        "options",
+        "value",
+        "uniqueId",
+        "fieldApiName",
+        "recordData",
+        "makeColumnsReadOnly"
       ]
     },
     lookup: {
@@ -35,7 +50,7 @@ export default class DynamicDataTableExt extends LightningDatatable {
         "filters",
         "recordData",
         "fieldApiName",
-        "relObjApiName"
+        "makeColumnsReadOnly"
       ]
     }
   };

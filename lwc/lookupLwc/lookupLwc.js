@@ -8,7 +8,6 @@
  * 04.10.2023 : Kevin Antonioli (braveitnow@pm.me) : modify to be object agnostic/dynamic to work with dynamicDataTable LWC
  */
 import lookUp from "@salesforce/apex/LookupController.lookUp";
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { getObjectInfo } from "lightning/uiObjectInfoApi";
 import { api, LightningElement, wire } from "lwc";
 
@@ -23,42 +22,15 @@ export default class LookupLwc extends LightningElement {
   @api uniqueKey;
   @api placeholder = "Search";
   @api fieldApiName;
-  @api relObjApiName;
   @api displayFields = "Name";
   @api displayFormat;
   @api recordData;
+  @api makeColumnsReadOnly;
   objLabelName;
 
   /*Create Record Start*/
   @api createRecord;
-  recordTypeOptions;
-  createRecordOpen;
-  recordTypeSelector;
-  mainRecord;
   isLoaded = false;
-
-  //stencil
-  cols = [1, 2];
-  opacs = [
-    "opacity: 1",
-    "opacity: 0.9",
-    "opacity: 0.8",
-    "opacity: 0.7",
-    "opacity: 0.6",
-    "opacity: 0.5",
-    "opacity: 0.4",
-    "opacity: 0.3",
-    "opacity: 0.2",
-    "opacity: 0.1"
-  ];
-  double = true;
-
-  //For Stencil
-  stencilClass = "";
-  stencilReplacement = "slds-hide";
-  //css
-  myPadding = "slds-modal__content";
-  /*Create Record End*/
 
   label;
   options; //lookup values
@@ -103,11 +75,13 @@ export default class LookupLwc extends LightningElement {
   @wire(getObjectInfo, { objectApiName: "$objName" })
   wiredObjectInfo({ error, data }) {
     if (data) {
-      const relObjApiName = this.relObjApiName.replace("__c", "__r");
+      const relObjField = this.fieldApiName
+        .replace(/\Id$/, "")
+        .replace("__c", "__r");
       for (let i = 0; i < this.recordData.length; i++) {
         if (this.recordData[i].Id === this.uniqueKey) {
           const record = this.recordData[i];
-          const lookupRecord = record[relObjApiName];
+          const lookupRecord = record[relObjField];
           if (lookupRecord) {
             this.selectItem(lookupRecord);
             break;
@@ -116,24 +90,12 @@ export default class LookupLwc extends LightningElement {
       }
 
       this.error = undefined;
-      const recordTypeInfos = Object.entries(data.recordTypeInfos);
-      if (recordTypeInfos.length > 1) {
-        let temp = [];
-        recordTypeInfos.forEach(([key, value]) => {
-          if (value.available === true && value.master !== true) {
-            temp.push({ label: value.name, value: value.recordTypeId });
-          }
-        });
-        this.recordTypeOptions = temp;
-      } else {
-        this.recordTypeId = data.defaultRecordTypeId;
-      }
     } else if (error) {
       this.error = error;
     }
   }
+
   //Used for creating Record End
-  objApiName;
   @wire(lookUp, {
     searchTerm: "$searchTerm",
     objApiName: "$objName",
@@ -189,16 +151,7 @@ export default class LookupLwc extends LightningElement {
     const selectedId = ele.dataset.id;
     const key = this.uniqueKey;
     const fieldApiName = this.fieldApiName;
-    this.dispatchEvent(
-      new CustomEvent("lookupvalueselect", {
-        composed: true,
-        bubbles: true,
-        cancelable: true,
-        detail: {
-          data: { selectedId, key, fieldApiName }
-        }
-      })
-    );
+    this.emitChangedEvent(selectedId, key, fieldApiName);
 
     if (this.blurTimeout) {
       clearTimeout(this.blurTimeout);
@@ -250,105 +203,22 @@ export default class LookupLwc extends LightningElement {
   handleRemovePill() {
     this.isValue = false;
     this.valueId = "";
-    const selectedId = "";
+    const selectedId = null;
     const key = this.uniqueKey;
+    const fieldApiName = this.fieldApiName;
+    this.emitChangedEvent(selectedId, key, fieldApiName);
+  }
+
+  emitChangedEvent(selectedId, key, fieldApiName) {
     this.dispatchEvent(
-      new CustomEvent("valueselect", {
+      new CustomEvent("lookupchanged", {
         composed: true,
         bubbles: true,
         cancelable: true,
         detail: {
-          data: { selectedId, key }
+          data: { selectedId, key, fieldApiName }
         }
       })
     );
-  }
-
-  createRecordFunc() {
-    if (this.recordTypeOptions) {
-      this.recordTypeSelector = true;
-    } else {
-      this.recordTypeSelector = false;
-      this.mainRecord = true;
-      //stencil before getting data
-      this.stencilClass = "";
-      this.stencilReplacement = "slds-hide";
-    }
-    this.createRecordOpen = true;
-  }
-
-  handleRecTypeChange(event) {
-    this.recordTypeId = event.target.value;
-  }
-
-  createRecordMain() {
-    this.recordTypeSelector = false;
-    this.mainRecord = true;
-    //stencil before getting data
-    this.stencilClass = "";
-    this.stencilReplacement = "slds-hide";
-  }
-
-  handleLoad(event) {
-    const details = event.detail;
-
-    if (details) {
-      setTimeout(() => {
-        this.stencilClass = "slds-hide";
-        this.stencilReplacement = "";
-        this.myPadding = "slds-p-around_medium slds-modal__content";
-      }, 1000);
-    }
-  }
-
-  handleSubmit() {
-    this.template.querySelector("lightning-record-form").submit();
-  }
-
-  handleSuccess(event) {
-    this.createRecordOpen = false;
-    this.mainRecord = false;
-    this.stencilClass = "";
-    this.stencilReplacement = "slds-hide";
-
-    const selectedId = event.detail.id;
-    const key = this.uniqueKey;
-
-    this.dispatchEvent(
-      new CustomEvent("valueselect", {
-        composed: true,
-        bubbles: true,
-        cancelable: true,
-        detail: {
-          data: { selectedId, key }
-        }
-      })
-    );
-
-    this.dispatchEvent(
-      new ShowToastEvent({
-        title: "Success",
-        message: `Record saved successfully with id: ${event.detail.id}`,
-        variant: "success"
-      })
-    );
-  }
-
-  handleError() {
-    this.dispatchEvent(
-      new ShowToastEvent({
-        title: "Error",
-        message: "Error saving the record",
-        variant: "error"
-      })
-    );
-  }
-
-  closeModal() {
-    this.stencilClass = "";
-    this.stencilReplacement = "slds-hide";
-    this.createRecordOpen = false;
-    this.recordTypeSelector = false;
-    this.mainRecord = false;
   }
 }

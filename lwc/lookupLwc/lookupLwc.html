@@ -20,19 +20,33 @@
                 </template>
                 <template lwc:if={isValue}>
                   <div id="lookup-pill" class="slds-pill-container">
-                    <lightning-pill
-                      class="pillSize"
-                      label={label}
-                      name={label}
-                      onremove={handleRemovePill}
-                      href={href}
-                    >
-                      <lightning-icon
-                        icon-name={iconName}
-                        alternative-text="acc"
+                    <template lwc:if={makeColumnsReadOnly}>
+                      <p style="border: 1px solid black">
+                        <lightning-formatted-text value={label}
+                          ><lightning-icon
+                            icon-name={iconName}
+                            alternative-text={objLabelName}
+                          >
+                          </lightning-icon
+                        ></lightning-formatted-text>
+                      </p>
+                    </template>
+                    <template lwc:else>
+                      <lightning-pill
+                        class="pillSize"
+                        label={label}
+                        name={label}
+                        onremove={handleRemovePill}
+                        href={href}
+                        disabled={makeColumnsReadOnly}
                       >
-                      </lightning-icon>
-                    </lightning-pill>
+                        <lightning-icon
+                          icon-name={iconName}
+                          alternative-text="objLabelName"
+                        >
+                        </lightning-icon>
+                      </lightning-pill>
+                    </template>
                   </div>
                 </template>
                 <template if:false={isValue}>
@@ -47,6 +61,7 @@
                       variant="label-hidden"
                       autocomplete="off"
                       placeholder={placeholder}
+                      disabled={makeColumnsReadOnly}
                     >
                     </lightning-input>
                   </div>
@@ -84,23 +99,6 @@
                         </span>
                       </li>
                     </template>
-                    <template lwc:if={createRecord}>
-                      <li onclick={createRecordFunc} role="presentation">
-                        <span
-                          class="slds-lookup__item-action slds-lookup__item-action--label"
-                          role="option"
-                        >
-                          <lightning-button-icon
-                            class="slds-icon slds-icon--small slds-icon-text-default"
-                            variant="border-inverse, bare"
-                            icon-name="utility:add"
-                            size="small"
-                          >
-                          </lightning-button-icon>
-                          <span class="slds-truncate">New {objLabelName}</span>
-                        </span>
-                      </li>
-                    </template>
                   </ul>
                 </div>
               </template>
@@ -109,139 +107,5 @@
         </div>
       </div>
     </div>
-
-    <!-- create Record Component-->
-    <template lwc:if={createRecordOpen}>
-      <template lwc:if={recordTypeSelector}>
-        <div>
-          <section
-            role="dialog"
-            tabindex="-1"
-            aria-labelledby="modal-heading-01"
-            aria-modal="true"
-            aria-describedby="modal-content-id-1"
-            class="slds-modal slds-fade-in-open"
-          >
-            <div class="slds-modal__container">
-              <header class="slds-modal__header">
-                <button
-                  class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                  title="Close"
-                >
-                  <lightning-button-icon
-                    icon-name="utility:close"
-                    variant="bare-inverse"
-                    size="large"
-                    onclick={closeModal}
-                  ></lightning-button-icon>
-                  <span class="slds-assistive-text">Close</span>
-                </button>
-                <h2
-                  id="modal-heading-01"
-                  class="slds-text-heading_medium slds-hyphenate"
-                >
-                  New {objLabelName}
-                </h2>
-              </header>
-              <div
-                class="slds-modal__content slds-p-around_medium"
-                id="modal-content-id-1"
-              >
-                <div class="slds-radio_faux slds-radio__label">
-                  <lightning-radio-group
-                    name="Record Type"
-                    label="Record Type"
-                    options={recordTypeOptions}
-                    value={recordTypeId}
-                    variant="label-inline"
-                    type="radio"
-                    onchange={handleRecTypeChange}
-                  >
-                  </lightning-radio-group>
-                </div>
-              </div>
-              <footer class="slds-modal__footer">
-                <lightning-button
-                  label="Cancel"
-                  onclick={closeModal}
-                ></lightning-button>
-                <lightning-button
-                  label="Next"
-                  onclick={createRecordMain}
-                  variant="brand"
-                >
-                </lightning-button>
-              </footer>
-            </div>
-          </section>
-          <div class="slds-backdrop slds-backdrop_open"></div>
-        </div>
-      </template>
-
-      <template lwc:if={mainRecord}>
-        <div class="main">
-          <section
-            role="dialog"
-            tabindex="-1"
-            class="slds-modal slds-fade-in-open slds-modal_medium"
-            aria-labelledby="modal-heading-01"
-            aria-modal="true"
-            aria-describedby="modal-content-id-1"
-          >
-            <div class="slds-modal__container">
-              <header class="slds-modal__header">
-                <button
-                  class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                  title="Close"
-                >
-                  <lightning-button-icon
-                    icon-name="utility:close"
-                    variant="bare-inverse"
-                    size="large"
-                    onclick={closeModal}
-                  ></lightning-button-icon>
-                  <span class="slds-assistive-text">Close</span>
-                </button>
-                <h2
-                  id="modal-heading-02"
-                  class="slds-text-heading_medium slds-hyphenate"
-                >
-                  New {objLabelName}
-                </h2>
-              </header>
-              <div class={myPadding} id="modal-content-id-2">
-                <div id="stencil" class={stencilClass}>
-                  <c-stencil-lwc
-                    double={double}
-                    columns={cols}
-                    opacities={opacs}
-                  ></c-stencil-lwc>
-                </div>
-
-                <div id="stencilReplacement" class={stencilReplacement}>
-                  <lightning-record-form
-                    class="recordForm"
-                    object-api-name={objName}
-                    record-type-id={recordTypeId}
-                    layout-type="Compact"
-                    columns="2"
-                    onload={handleLoad}
-                    density="comfy"
-                    onerror={handleError}
-                    onsuccess={handleSuccess}
-                  >
-                  </lightning-record-form>
-                </div>
-              </div>
-              <footer class="slds-modal__footer">
-                <!--lightning-button class="slds-p-right_small" label="Save" onclick={handleSubmit} variant="brand"></lightning-button>
-                            <lightning-button label="Cancel" onclick={closeModal}></lightning-button>-->
-              </footer>
-            </div>
-          </section>
-          <div class="slds-backdrop slds-backdrop_open"></div>
-        </div>
-      </template>
-    </template>
   </div>
 </template>

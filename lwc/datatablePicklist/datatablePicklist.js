@@ -14,14 +14,16 @@ export default class DatatablePicklist extends LightningElement {
   @api placeholder;
   @api options;
   @api value;
-  @api context;
+  @api uniqueId;
   @api fieldApiName;
+  @api makeColumnsReadOnly;
 
   handleChange(event) {
+    console.log("makeColumnsReadOnly: ", this.makeColumnsReadOnly);
     //show the selected value on UI
     this.value = event.detail.value;
 
-    //fire event to send context and selected value to the data table
+    //fire event to send uniqueId and selected value to the data table
     this.dispatchEvent(
       new CustomEvent("picklistchanged", {
         composed: true,
@@ -29,7 +31,7 @@ export default class DatatablePicklist extends LightningElement {
         cancelable: true,
         detail: {
           data: {
-            context: this.context,
+            uniqueId: this.uniqueId,
             value: this.value,
             fieldApiName: this.fieldApiName
           }
